@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Electrostore - Electronic Gadge Store HTML Template</title>
+  {{>partials/htmlHead}}
+</head>
+<body data-bs-theme="dark">
+  {{>partials/header}}
+  <section class="py-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="page-title pb-2">Cart</h1>
+        <nav class="breadcrumb fs-6">
+          <a class="breadcrumb-item nav-link" href="#">Home</a>
+          <a class="breadcrumb-item nav-link" href="#">Pages</a>
+          <span class="breadcrumb-item active" aria-current="page">Cart</span>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-md-5">
+        <div class="col-md-7">
+          <div class="cart-table">
+            <div class="cart-header">
+              <div class="row d-flex">
+                <h6 class="cart-title text-uppercase text-muted col-lg-5 pb-3">Product</h6>
+                <h6 class="cart-title text-uppercase text-muted col-lg-3 pb-3">Quantity</h6>
+                <h6 class="cart-title text-uppercase text-muted col-lg-1 pb-3">Subtotal</h6>
+              </div>
+            </div>
+            {{#cartItems}}
+            <div class="cart-item border-top border-bottom">
+              <div class="row align-items-center">
+                <div class="col-lg-5 col-md-3">
+                  <div class="cart-info d-flex flex-wrap align-items-center">
+                    <div class="col-lg-3">
+                      <div class="card-image">
+                        <img src="{{image}}" alt="{{{shortName}}}" class="img-fluid">
+                      </div>
+                    </div>
+                    <div class="col-lg-9">
+                      <div class="card-detail ps-3">
+                        <h5 class="card-title">
+                          <a href="#" class="text-decoration-none">{{{shortName}}}</a>
+                        </h5>
+                        <div class="card-price">
+                          <span class="money">{{discountPrice}}&euro;</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-7">
+                  <div class="row d-flex">
+                    <div class="col-lg-4">
+                      <div class="input-group product-qty">
+                        <span class="input-group-btn">
+                            <a href="cart/decrease/{{id}}" type="button" class="" >
+                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                            </a>
+                        </span>
+                        <input type="text" id="quantity" name="quantity" class="form-control input-number text-center" value="{{quantity}}" min="1" max="100">
+                        <span class="input-group-btn">
+                            <a href="cart/increase/{{id}}" type="button" class="" data-type="plus" data-field="">
+                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                            </a>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-lg-8 text-center">
+                      <div class="total-price">
+                        <span class="money">{{totalPrice}}&euro;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-2">
+                  <div class="cart-remove">
+                    <a href="cart/delete/{{id}}">
+                      <svg width="32px">
+                        <use xlink:href="#trash"></use>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{/cartItems}}
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="cart-totals pb-5">
+            <h4 class="pb-4">Cart Total</h4>
+            <div class="total-price pb-5">
+              <table cellspacing="0" class="table text-uppercase">
+                <tbody>
+                  <tr class="subtotal pt-2 pb-2 border-top border-bottom">
+                    <th>Subtotal</th>
+                    <td data-title="Subtotal">
+                      <span class="price-amount amount ps-5">
+                        <bdi>
+                          <span class="price-currency-symbol">&euro;</span>{{grandTotal}}
+                        </bdi>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr class="order-total pt-2 pb-2 border-bottom">
+                    <th>Total</th>
+                    <td data-title="Total">
+                      <span class="price-amount amount ps-5">
+                        <bdi>
+                          <span class="price-currency-symbol">&euro;</span>{{grandTotal}}</bdi>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="button-wrap row g-2">
+              <div class="col-md-6"><button class="btn btn-dark text-uppercase btn-rounded-none w-100">Update Cart</button></div>
+              <div class="col-md-6"><button class="btn btn-dark text-uppercase btn-rounded-none w-100">Continue Shopping</button></div>
+              <div class="col-md-12"><button class="btn btn-primary text-uppercase btn-rounded-none w-100">Proceed to checkout</button></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter bg-black">
+    <div class="container-fluid">
+      <div class="newsletter jarallax">
+        <img src="images/bg-newsletter.jpg" alt="newsletter" class="jarallax-img">
+
+        <div class="row py-5 justify-content-center">
+          <div class="col-md-6">
+            <div class="row g-5 my-4 align-items-baseline">
+              <div class="col-md-7">
+                <h3 class="display-4 m-0 text-md-end">Join Our Newsletter</h3>
+              </div>
+              <div class="col-md-5">
+                <p class="fs-6 text-gray">Sign Up for our newsletter and never miss any offers</p>
+              </div>
+            </div>
+            <div class="row mb-5">
+              <div class="col-md-12">
+                <form id="form" class="d-flex flex-row gap-0">
+                  <input type="text" name="email" placeholder="Your Email Addresss" class="form-control rounded-0 rounded-start">
+                  <button class="btn btn-primary text-uppercase rounded-0 rounded-end px-5">Sign Up</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  {{>partials/footer}}
+</body>
+</html>
