@@ -92,4 +92,17 @@ class CartServiceTest {
         CartItem cartItem = cartService.findById(Integer.MAX_VALUE);
         assertEquals(null, cartItem);
     }
-}
+
+    @Test
+    void removeProduct_171() {
+        cartService.addProduct(171);
+        String shortName = cartService.deleteItem(171);
+        assertTrue(shortName.startsWith("Xiaomi 11 Lite NE 5G"));
+    }
+
+        @Test
+        void removeProduct_non_existent () {
+            String shortName = cartService.deleteItem(Integer.MAX_VALUE);
+            assertEquals(null, shortName);
+        }
+    }

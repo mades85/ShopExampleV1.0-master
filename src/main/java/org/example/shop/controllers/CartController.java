@@ -1,7 +1,9 @@
 package org.example.shop.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Request;
 import org.example.shop.services.CartService;
+import org.example.shop.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,7 @@ public class CartController {
 
     @GetMapping(value = "/add/{productId}")
     public String addToCart(
-            @PathVariable(name = "productId") Integer productId, RedirectAttributes atts) {
+            @PathVariable(name = "productId") Integer productId, RedirectAttributes atts, HttpServletRequest request) {
         String productName = cartService.addProduct(productId);
         if (productName != null) {
             String message = String.format("'%s' added to the cart", productName);
@@ -34,8 +36,8 @@ public class CartController {
             atts.addFlashAttribute(MESSAGE, message);
             LOG.warn(message);
         }
-        //String refferer = request.getHeader("referer");
-        return "redirect:/index.html";
+        String refferer = request.getHeader("referer");
+        return "redirect:" + refferer;
     }
 
     @GetMapping(value = {"/increase/{productId}"})
@@ -61,13 +63,17 @@ public class CartController {
     }
 
     @GetMapping(value = "/delete/{productID}")
-    public String deleteFromCart(@PathVariable(name = "productID") Integer productId) {
-        boolean isSuccesful = cartService.deleteItem(productId);
-        if (isSuccesful) {
+    public String deleteFromCart(@PathVariable(name = "productID") Integer productId, RedirectAttributes atts) {
+        String productName = cartService.deleteItem(productId);
+        String message = "";
+        if (productName != null) {
+            message = String.format("'%s' removed to the cart", productName);
             LOG.info("Cart item with ID '{}' deleted", productId);
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
+            message = String.format("Product with ID '%s' could not be found", productId);
         }
+        atts.addFlashAttribute(MESSAGE, message);
         return "redirect:/cart.html";
     }
 }

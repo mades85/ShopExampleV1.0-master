@@ -99,6 +99,7 @@ public class CartService {
 
     /**
      * Finds a {@link CartItem} by its productId and increased its quantity by 1
+     *
      * @param productId
      * @return true on success
      */
@@ -115,8 +116,10 @@ public class CartService {
         }
 
     }
+
     /**
      * Finds a {@link CartItem} by its productId and decrease its quantity by 1
+     *
      * @param productId
      * @return false on success
      */
@@ -132,21 +135,24 @@ public class CartService {
             return false;
         }
     }
+
     /**
      * Finds a {@link CartItem} by its productId and delete it from the cart
+     *
      * @param productId
      * @return true on success
      */
-    public boolean deleteItem(long productId) {
+    public String deleteItem(long productId) {
         for (CartItem cartItem : cart.getItems()) {
-             if (cartItem.getId() == productId) {
+            if (cartItem.getId() == productId) {
+                String name = cartItem.getShortName();
                 cart.getItems().remove(cartItem);
                 LOG.debug("Delete of '{}'", cartItem.getShortName());
-                return true;
+                return name;
             }
         }
         LOG.debug("Product with ID '{}' not found in cart", productId);
-        return false;
+        return null;
     }
 
 }

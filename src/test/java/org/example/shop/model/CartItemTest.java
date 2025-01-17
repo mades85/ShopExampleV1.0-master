@@ -11,7 +11,7 @@ class CartItemTest {
     CartItem cartItem;
 
     public CartItemTest(){
-        CartItem cartItem = new CartItem( 171 ,
+        this.cartItem= new CartItem( 171 ,
                 "Xiaomi 11 Lite NE 5G " ,
                 "https://m.media-amazon.com/images/I/71XmlboxNZL._AC_UL320_.jpg ",
                 4.0 ,
