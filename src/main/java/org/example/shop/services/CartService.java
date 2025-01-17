@@ -97,7 +97,11 @@ public class CartService {
         return null;
     }
 
-
+    /**
+     * Finds a {@link CartItem} by its productId and increased its quantity by 1
+     * @param productId
+     * @return true on success
+     */
     public boolean increaseQuantity(long productId) {
         CartItem cartItem = findById(productId);
         if (cartItem != null) {
@@ -111,7 +115,11 @@ public class CartService {
         }
 
     }
-
+    /**
+     * Finds a {@link CartItem} by its productId and decrease its quantity by 1
+     * @param productId
+     * @return false on success
+     */
     public boolean decreaseQuantity(long productId) {
         CartItem cartItem = findById(productId);
         if (cartItem != null) {
@@ -124,14 +132,20 @@ public class CartService {
             return false;
         }
     }
-
-    public boolean deleteItem(long prodcutId) {
+    /**
+     * Finds a {@link CartItem} by its productId and delete it from the cart
+     * @param productId
+     * @return true on success
+     */
+    public boolean deleteItem(long productId) {
         for (CartItem cartItem : cart.getItems()) {
-             if (cartItem.getId() == prodcutId) {
+             if (cartItem.getId() == productId) {
                 cart.getItems().remove(cartItem);
+                LOG.debug("Delete of '{}'", cartItem.getShortName());
                 return true;
             }
         }
+        LOG.debug("Product with ID '{}' not found in cart", productId);
         return false;
     }
 
