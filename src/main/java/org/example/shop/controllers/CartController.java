@@ -67,7 +67,7 @@ public class CartController {
         String productName = cartService.deleteItem(productId);
         String message = "";
         if (productName != null) {
-            message = String.format("'%s' removed to the cart", productName);
+            message = String.format("'%s' removed from the cart", productName);
             LOG.info("Cart item with ID '{}' deleted", productId);
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
