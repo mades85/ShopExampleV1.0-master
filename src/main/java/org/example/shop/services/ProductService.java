@@ -104,14 +104,17 @@ public class ProductService {
     }
 
     public void sortArticles(String sorting) {
-        switch (sorting) {
-            case "price":
-                products.sort((a, b) -> (int) (a.getActualPrice() * 100 - b.getActualPrice() * 100));
-                break;
-            case "rating":
-                products.sort((a, b) -> (int) (a.getRating() * 100 - b.getRating() * 100));
-                break;
-            default:
+        if (sorting != null && !sorting.isEmpty()) {
+            switch (sorting) {
+                case "price":
+                    products.sort((a, b) -> (int) (a.getActualPrice() * 100 - b.getActualPrice() * 100));
+                    break;
+                case "rating":
+                    products.sort((a, b) -> (int) (a.getRating() * 100 - b.getRating() * 100));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

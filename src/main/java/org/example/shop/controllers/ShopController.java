@@ -57,6 +57,7 @@ public class ShopController implements ErrorController {
 
         LOG.info("showing page " + page + " of " + maxPages + " pages");
         LOG.info("getting Items from " + from + " to " + to);
+        LOG.info("sorting " + ((sort == null) ? "default" : sort ) );
         viewModel.addAttribute("products", productService.getProductsRange(from, to));
         viewModel.addAttribute("from", from);
         viewModel.addAttribute("to", to);
