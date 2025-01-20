@@ -47,7 +47,7 @@ public class ShopController implements ErrorController {
         int to = (page == null) ? ProductService.PAGE_SIZE : (page * productService.PAGE_SIZE) + productService.PAGE_SIZE;
         List<Product> products = productService.getProducts();
         loadCartItems(viewModel);
-        viewModel.addAttribute("products", products.subList(from, to));
+        viewModel.addAttribute("products", productService.getProductsRange(from, to));
         viewModel.addAttribute("from", from);
         viewModel.addAttribute("to", to);
         viewModel.addAttribute("numberOfProducts", products.size());
