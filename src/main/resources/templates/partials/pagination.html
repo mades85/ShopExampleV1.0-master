@@ -1,0 +1,17 @@
+ <nav aria-label="Page navigation" class="d-flex justify-content-center mt-5">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="?page={{prevPage}}" aria-label="Previous">
+                <i class="icon icon-arrow-left"></i>
+            </a>
+        </li>
+        {{#pages}}
+        <li class="page-item {{value}}" aria-current="page"><a class="page-link" href="?page={{key}}">{{key}}</a></li>
+        {{/pages}}
+        <li class="page-item">
+            <a class="page-link" href="?page={{nextPage}}" aria-label="Next">
+                <i class="icon icon-arrow-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

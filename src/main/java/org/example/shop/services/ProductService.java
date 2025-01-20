@@ -93,7 +93,12 @@ public class ProductService {
 
     public Product getProductById(long id) {
         if(id > products.size() - 1) return null;
+
         return products.get((int) id);
-        }
     }
+
+    public int getNumberOfProducts() {
+        return products.size();
+    }
+}
 

@@ -1,6 +1,5 @@
 package org.example.shop.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.shop.model.Cart;
@@ -16,8 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ShopController implements ErrorController {
@@ -43,16 +43,20 @@ public class ShopController implements ErrorController {
 
     @GetMapping(value = {"/shop.html"})
     public String shop(Model viewModel, @RequestParam(name = "page", required = false) Integer page) {
-        int from = (page == null ? 0 : page * productService.PAGE_SIZE);
-        int to = (page == null) ? ProductService.PAGE_SIZE : (page * productService.PAGE_SIZE) + productService.PAGE_SIZE;
-        List<Product> products = productService.getProducts();
-        loadCartItems(viewModel);
+
+        int maxPages = productService.getNumberOfProducts() / productService.PAGE_SIZE + 1;
+        page = page == null ? 1 : (page < maxPages ? page : maxPages);
+        page = page < 1 ? 1 : page;
+        int from = Math.max((page - 1) * productService.PAGE_SIZE, 0);
+        int to = Math.min(productService.getNumberOfProducts(), from + productService.PAGE_SIZE);
+        LOG.info("showing page " + page + " of " + maxPages + " pages");
+        LOG.info("getting Items from " + from + " to " + to);
         viewModel.addAttribute("products", productService.getProductsRange(from, to));
         viewModel.addAttribute("from", from);
         viewModel.addAttribute("to", to);
-        viewModel.addAttribute("numberOfProducts", products.size());
-        viewModel.addAttribute("page", (page==null) ? 1 : page);
-        viewModel.addAttribute("numberOfPages", products.size()/productService.PAGE_SIZE + 1);
+        viewModel.addAttribute("numberOfProducts", productService.getNumberOfProducts());
+        buildPageNumbers(viewModel, page);
+        loadCartItems(viewModel);
 
         return "shop";
     }
@@ -89,5 +93,18 @@ public class ShopController implements ErrorController {
         viewModel.addAttribute("cartItems", cart.getItems());
         viewModel.addAttribute("numOfCartItems", cart.getNumberOfItems());
         viewModel.addAttribute("grandTotal", cart.getGrandTotal());
+    }
+
+    void buildPageNumbers(Model viewModel, int page) {
+        int pageCount = (productService.getProducts().size() / productService.PAGE_SIZE)+ 1;
+        Map<Integer, String> pages = new HashMap<>();
+        for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
+            String active = (pageNumber == page) ? "active" : "";
+            pages.put(pageNumber, active);
+        }
+        viewModel.addAttribute("pages", pages.entrySet());
+        viewModel.addAttribute("pageCount", pageCount);
+        viewModel.addAttribute("prevPage", (page == 1)? page : page - 1);
+        viewModel.addAttribute("nextPage", (page == pageCount) ? page :page + 1);
     }
 }
