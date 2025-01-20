@@ -42,13 +42,19 @@ public class ShopController implements ErrorController {
     }
 
     @GetMapping(value = {"/shop.html"})
-    public String shop(Model viewModel, @RequestParam(name = "page", required = false) Integer page) {
+    public String shop(Model viewModel, @RequestParam(name = "page", required = false) Integer page,
+                       @RequestParam(name = "sort", required = false) String sort) {
 
+        // validierung der Seitenzahl
         int maxPages = productService.getNumberOfProducts() / productService.PAGE_SIZE + 1;
         page = page == null ? 1 : (page < maxPages ? page : maxPages);
         page = page < 1 ? 1 : page;
+
+        // zu zeigende Produktrange ermitteln
         int from = Math.max((page - 1) * productService.PAGE_SIZE, 0);
         int to = Math.min(productService.getNumberOfProducts(), from + productService.PAGE_SIZE);
+        productService.sortArticles(sort);
+
         LOG.info("showing page " + page + " of " + maxPages + " pages");
         LOG.info("getting Items from " + from + " to " + to);
         viewModel.addAttribute("products", productService.getProductsRange(from, to));

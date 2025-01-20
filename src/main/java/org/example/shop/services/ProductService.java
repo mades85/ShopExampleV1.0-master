@@ -26,7 +26,7 @@ public class ProductService {
 
     public List<Product> getProductsRange(int from, int to) {
         if (from >= 0 && to >= 0) {
-            if  (to < products.size()) {
+            if (to < products.size()) {
                 return products.subList(from, to);
 
             } else if (to < products.size() + PAGE_SIZE + 1) {
@@ -78,6 +78,7 @@ public class ProductService {
 
     /**
      * Delivers the list of products, i.e. the product range
+     *
      * @return the product range
      */
 
@@ -87,18 +88,31 @@ public class ProductService {
 
     /**
      * Gets a product by its id
+     *
      * @param id the id of the product to be found
      * @return the found {@link Product} or null , otherwise
      */
 
     public Product getProductById(long id) {
-        if(id > products.size() - 1) return null;
+        if (id > products.size() - 1) return null;
 
         return products.get((int) id);
     }
 
     public int getNumberOfProducts() {
         return products.size();
+    }
+
+    public void sortArticles(String sorting) {
+        switch (sorting) {
+            case "price":
+                products.sort((a, b) -> (int) (a.getActualPrice() * 100 - b.getActualPrice() * 100));
+                break;
+            case "rating":
+                products.sort((a, b) -> (int) (a.getRating() * 100 - b.getRating() * 100));
+                break;
+            default:
+        }
     }
 }
 
