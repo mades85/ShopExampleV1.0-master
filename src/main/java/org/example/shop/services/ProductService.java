@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 public class ProductService {
+    public static final int PAGE_SIZE = 15;
     // TODO: move to application.properties
     private static final String DATA_SOURCE = "src/main/resources/data/electronics.csv";
     private List<Product> products;
@@ -21,6 +22,13 @@ public class ProductService {
         if (products == null) {
             products = readProducts(DATA_SOURCE);
         }
+    }
+
+    public List<Product> getProductsRange(int from, int to) {
+        if (from > 0 && to > 0 && to > products.size() - 1) {
+            return products.subList(from, to);
+        }
+        return null;
     }
 
     List<Product> readProducts(String fileName) {
