@@ -25,8 +25,13 @@ public class ProductService {
     }
 
     public List<Product> getProductsRange(int from, int to) {
-        if (from >= 0 && to >= 0 && !(to > products.size() - 1)) {
-            return products.subList(from, to);
+        if (from >= 0 && to >= 0) {
+            if  (to < products.size()) {
+                return products.subList(from, to);
+
+            } else if (to < products.size() + PAGE_SIZE + 1) {
+                return products.subList(from, products.size());
+            }
         }
         return null;
     }
