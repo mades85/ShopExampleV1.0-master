@@ -79,4 +79,49 @@ class ProductServiceTest {
         Product firstProduct = products.get(0);
         assertTrue(firstProduct.getName().startsWith("Xifo LYF Earth"));
     }
+
+    @Test
+    void sortArticels_name_asc() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(Sorting.ALPHA_ASC);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("2.5mm Male"));
+    }
+
+    @Test
+    void sortArticels_price_desc() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(Sorting.PRICE_DESC);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("Xiaomi 11 Lite"));
+    }
+
+    @Test
+    void sortArticels_price_asc() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(Sorting.PRICE_ASC);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("Amazon Basics USB"));
+    }
+
+    @Test
+    void sortArticles_rating_desc() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(Sorting.RATING_DESC);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("CLAVIER Pulse in-Ear"));
+    }
+
+    @Test
+    void sortArticles_rating_asc() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(Sorting.RATING_ASC);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("Screen Magnifier for"));
+    }
 }
