@@ -2,6 +2,7 @@ package org.example.shop.controllers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.example.shop.enums.Sorting;
 import org.example.shop.model.Cart;
 import org.example.shop.model.Product;
 import org.example.shop.services.CartService;
@@ -43,7 +44,7 @@ public class ShopController implements ErrorController {
 
     @GetMapping(value = {"/shop.html"})
     public String shop(Model viewModel, @RequestParam(name = "page", required = false) Integer page,
-                       @RequestParam(name = "sort", required = false) String sort) {
+                       @RequestParam(name = "sort", required = false) Sorting sort) {
 
         // validierung der Seitenzahl
         int maxPages = productService.getNumberOfProducts() / productService.PAGE_SIZE + 1;
@@ -53,12 +54,11 @@ public class ShopController implements ErrorController {
         // zu zeigende Produktrange ermitteln
         int from = Math.max((page - 1) * productService.PAGE_SIZE, 0);
         int to = Math.min(productService.getNumberOfProducts(), from + productService.PAGE_SIZE);
-        productService.sortArticles(sort);
 
         LOG.info("showing page " + page + " of " + maxPages + " pages");
         LOG.info("getting Items from " + from + " to " + to);
         LOG.info("sorting " + ((sort == null) ? "default" : sort ) );
-        viewModel.addAttribute("products", productService.getProductsRange(from, to));
+        viewModel.addAttribute("products", productService.getProductsRange(sort, from, to));
         viewModel.addAttribute("from", from);
         viewModel.addAttribute("to", to);
         viewModel.addAttribute("numberOfProducts", productService.getNumberOfProducts());

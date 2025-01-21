@@ -1,5 +1,6 @@
 package org.example.shop.services;
 
+import org.example.shop.enums.Sorting;
 import org.example.shop.model.Product;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.Or;
@@ -68,5 +69,14 @@ class ProductServiceTest {
         assertEquals(null,
                 productService.getProductsRange(15, productService.getProducts().size()
                         + productService.PAGE_SIZE + 1));
+    }
+
+    @Test
+    void sortArticles_name_desc() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(Sorting.ALPHA_DESC);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("Xifo LYF Earth"));
     }
 }

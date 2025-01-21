@@ -146,7 +146,8 @@ a {
 }
 
 .pagination {
-  --bs-pagination-active-bg: var(--bs-black);
+  --bs-pagination-active-bg: var(--bs-dark);
+  --bs-pagination-active-color: var(--bs-primary);
   --bs-pagination-border-width: 0;
   --bs-pagination-border-radius: 0;
 }

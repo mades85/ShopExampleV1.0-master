@@ -2,6 +2,7 @@ package org.example.shop.services;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.example.shop.enums.Sorting;
 import org.example.shop.model.Product;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,8 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.shop.enums.Sorting.ALPHA_DESC;
 
 @Service
 public class ProductService {
@@ -34,6 +37,11 @@ public class ProductService {
             }
         }
         return null;
+    }
+
+    public List<Product> getProductsRange(Sorting sorting, int from, int to) {
+        sortArticles(sorting);
+        return getProductsRange(from, to);
     }
 
     List<Product> readProducts(String fileName) {
@@ -103,14 +111,26 @@ public class ProductService {
         return products.size();
     }
 
-    public void sortArticles(String sorting) {
-        if (sorting != null && !sorting.isEmpty()) {
+    public void sortArticles(Sorting sorting) {
+        if (sorting != null) {
             switch (sorting) {
-                case "price":
+                case PRICE_ASC:
                     products.sort((a, b) -> (int) (a.getActualPrice() * 100 - b.getActualPrice() * 100));
                     break;
-                case "rating":
+                case PRICE_DESC:
+                    products.sort((a, b) -> (int) (b.getActualPrice() * 100 - a.getActualPrice() * 100));
+                    break;
+                case RATING_ASC:
                     products.sort((a, b) -> (int) (a.getRating() * 100 - b.getRating() * 100));
+                    break;
+                case RATING_DESC:
+                    products.sort((a, b) -> (int) (b.getRating() * 100 - a.getRating() * 100));
+                    break;
+                case ALPHA_DESC:
+                    products.sort((a, b) -> b.getName().compareToIgnoreCase(a.getName()));
+                    break;
+                case ALPHA_ASC:
+                    products.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
                     break;
                 default:
                     break;
