@@ -124,4 +124,14 @@ class ProductServiceTest {
         Product firstProduct = products.get(0);
         assertTrue(firstProduct.getName().startsWith("Screen Magnifier for"));
     }
+
+    @Test
+    void sortArticles_default() {
+        List<Product> products = productService.getProducts();
+        productService.sortArticles(null);
+
+        Product firstProduct = products.get(0);
+        assertTrue(firstProduct.getName().startsWith("2.5mm Male"));
+
+    }
 }
