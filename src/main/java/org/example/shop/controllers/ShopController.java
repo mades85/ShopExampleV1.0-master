@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,12 +49,15 @@ public class ShopController implements ErrorController {
 
         // validierung der Seitenzahl
         int maxPages = productService.getNumberOfProducts() / productService.PAGE_SIZE + 1;
-        page = page == null ? 1 : (page < maxPages ? page : maxPages);
+        page = page != null ?  (page < maxPages ? page : maxPages) : 1 ;
         page = page < 1 ? 1 : page;
 
         // zu zeigende Produktrange ermitteln
         int from = Math.max((page - 1) * productService.PAGE_SIZE, 0);
         int to = Math.min(productService.getNumberOfProducts(), from + productService.PAGE_SIZE);
+
+        // Sortierung Validieren
+        sort = (sort != null) ? sort : Sorting.ALPHA_ASC;
 
         LOG.info("showing page " + page + " of " + maxPages + " pages");
         LOG.info("getting Items from " + from + " to " + to);
@@ -64,6 +68,7 @@ public class ShopController implements ErrorController {
         viewModel.addAttribute("numberOfProducts", productService.getNumberOfProducts());
         buildPageNumbers(viewModel, page);
         loadCartItems(viewModel);
+        createSortingLinks(viewModel, sort);
 
         return "shop";
     }
@@ -113,5 +118,16 @@ public class ShopController implements ErrorController {
         viewModel.addAttribute("pageCount", pageCount);
         viewModel.addAttribute("prevPage", (page == 1)? page : page - 1);
         viewModel.addAttribute("nextPage", (page == pageCount) ? page :page + 1);
+    }
+
+    void createSortingLinks(Model viewModel, Sorting currentSort) {
+        List<Sorting> sortings = new ArrayList<>();
+        for (Sorting entry : Sorting.values()) {
+            String isCurrentSort = entry.equals(currentSort) ? "selected" : "";
+            entry.setSelected(isCurrentSort);
+            sortings.add(entry);
+        }
+        viewModel.addAttribute("sortings", sortings);
+        viewModel.addAttribute("currentSort", currentSort);
     }
 }

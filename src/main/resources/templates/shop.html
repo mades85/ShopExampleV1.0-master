@@ -4,6 +4,15 @@
 <head>
     <title>Electrostore - Electronic Gadge Store HTML Template</title>
     {{> partials/htmlHead }}
+    <script>
+        function triggerSorting(element) {
+            const searchParams = new URLSearchParams(location.search)
+            searchParams.set('sort', element.value)
+            searchParams.set('page', "1")
+            Location.search = searchParams.toString()
+        }
+
+    </script>
 </head>
 <body data-bs-theme="dark">
 {{> partials/header }}
@@ -24,18 +33,7 @@
 <main class="main-content">
     <section class="shopify-element py-5">
         <div class="container-fluid">
-            <div class="d-flex justify-content-between py-1">
-                <div>
-                    <span>Showing {{from}}-{{to}} of {{numberOfProducts}} result</span>
-                </div>
-                <div>
-                    <select class="form-select border-0" aria-label="Default select example">
-                        <option selected>Default Sorting</option>
-                        <option value="1"><a href="shop.html?sort=price">Price</a></option>
-                        <option value="2">Rating</option>
-                    </select>
-                </div>
-            </div>
+            {{>partials/sorting}}
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5">
                 {{#products}}
                 <div class="col">
