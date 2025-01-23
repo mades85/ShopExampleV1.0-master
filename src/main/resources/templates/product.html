@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Product Details Page</title>
+    <meta name="description" content="Bootstrap 5 Electronic Shop HTML CSS Template">
+    {{> partials/htmlHead }}
+</head>
+<body data-bs-theme="dark">
+{{> partials/header }}
+
+<main class="main-content mt-5">
+    <div class="container">
+        <nav class="breadcrumb mt-5">
+            <a class="breadcrumb-item" href="index.html">Home</a>
+            <span class="breadcrumb-item active" aria-current="page">Shop</span>
+        </nav>
+    </div>
+
+    {{#product}}
+    <section id="product-detail" class="single-product">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-md-7">
+                    <div class="row flex-column-reverse flex-lg-row">
+                        <div class="col-md-12">
+                            <div class="product-large-slider">
+                                <div class="image-zoom">
+                                    <img src="{{image}}" alt="{{{shortName}}}" width="99%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="product-info">
+                        <div class="element-header">
+                            <h2 itemprop="name" class="display-4">{{{shortName}}}</h2>
+                            <div class="rating-container d-flex align-items-center">
+                                {{#ratingStars}}
+                                    <svg width="32" height="32">
+                                        <use xlink:href="#star-{{.}}"></use>
+                                    </svg>
+                                {{/ratingStars}}
+                                <span class="rating-count">({{rating}}) of {{numberOfRatings}} ratings</span>
+                            </div>
+                        </div>
+                        <div class="product-price">
+                            <span class="fs-2">{{discountPrice}}&euro;</span>
+                            <del>{{actualPrice}}&euro; before</del>
+                        </div>
+                        <p>{{{name}}}</p>
+
+                        <div class="product-action mt-4">
+                            <div class="d-flex flex-wrap gap-3  text-uppercase">
+                                <a href="/cart/add/{{id}}" role="button"
+                                   class="btn btn-primary">Add to cart</a>
+                                <a href="/shop.html" role="button"
+                                   class="btn btn-outline-secondary">Continue Shopping</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{/product}}
+</main>
+
+{{> partials/footer }}
+</body>
+</html>

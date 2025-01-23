@@ -1,0 +1,9 @@
+<h4 class="mt-2">Categories</h4>
+<div class="list-group">
+    {{#categories}}
+    <a href="?category={{name}}&sort={{sort}}"
+        class="list-group-item list-group-item-action {{active}}">
+        {{label}}
+    </a>
+    {{/categories}}
+</div>
