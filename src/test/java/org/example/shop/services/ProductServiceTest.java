@@ -61,13 +61,15 @@ class ProductServiceTest {
 
     @Test
     void getProductRange_negative_from() {
-        assertEquals(null, productService.getRange(-1, Constants.PAGE_SIZE));
+        List<Product> expectet =  productService.getProducts().subList(0, Constants.PAGE_SIZE);
+        assertEquals(expectet, productService.getRange(-1, Constants.PAGE_SIZE));
     }
 
 
     @Test
     void getProductRange_to_greater_than_size() {
-        assertEquals(null,
+        List<Product> expectet =  productService.getProducts().subList(15, productService.getProducts().size());
+        assertEquals(expectet,
                 productService.getRange(15, productService.getProducts().size()
                         + Constants.PAGE_SIZE + 1));
     }

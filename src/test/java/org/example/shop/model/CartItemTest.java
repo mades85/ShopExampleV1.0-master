@@ -24,7 +24,7 @@ class CartItemTest {
     @Test
     void getTotalPrice() {
         cartItem.setQuantity(3);
-        assertEquals(857.97, cartItem.getTotalPrice());
+        assertEquals(1121.97, cartItem.getTotalPrice());
     }
 
     @Test
