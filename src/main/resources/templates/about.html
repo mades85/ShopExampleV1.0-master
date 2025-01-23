@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
-  <title>Electrostore - Electronic Gadge Store HTML Template</title>
+  <title>About us</title>
+  <meta name="description" content="Bootstrap 5 Electronic Shop HTML CSS Template">
   {{> partials/htmlHead }}
 </head>
+
 <body data-bs-theme="dark">
   {{> partials/header }}
 
@@ -14,8 +16,7 @@
         <div class="d-flex flex-wrap flex-column justify-content-between align-items-center mt-5">
           <h1 class="display-5 fw-bold">About Us</h1>
           <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="#">Home</a>
-            <a class="breadcrumb-item" href="#">Pages</a>
+            <a class="breadcrumb-item" href="index.html">Home</a>
             <span class="breadcrumb-item active" aria-current="page">About Us</span>
           </nav>
         </div>
@@ -117,7 +118,7 @@
     <div class="container">        
       <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3"> 
         <h4>Read Blog Posts</h4>
-        <a href="blog.html" class="btn-link">View All</a>
+        <a href="#" class="btn-link">View All</a>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -181,20 +182,6 @@
     </div>
   </section>
   
-  <section class="logo-bar py-5 border-top">
-    <div class="container">
-      <div class="row">
-        <div class="logo-content d-flex flex-wrap justify-content-between">
-          <img src="images/brand1.png" alt="logo" class="logo-image img-fluid">
-          <img src="images/brand2.png" alt="logo" class="logo-image img-fluid">
-          <img src="images/brand3.png" alt="logo" class="logo-image img-fluid">
-          <img src="images/brand4.png" alt="logo" class="logo-image img-fluid">
-          <img src="images/brand5.png" alt="logo" class="logo-image img-fluid">
-        </div>
-      </div>
-    </div>
-  </section>
-  
   <section class="newsletter bg-black">
     <div class="container-fluid">
       <div class="newsletter jarallax">
@@ -225,6 +212,6 @@
     </div>
   </section>
 
-  {{>partials/footer}}
+  {{> partials/footer }}
 </body>
 </html>

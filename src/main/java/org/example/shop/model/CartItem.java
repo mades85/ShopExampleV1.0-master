@@ -1,5 +1,12 @@
 package org.example.shop.model;
 
+/**
+ * Extends the {@link Product} by a quantity
+ *
+ * @author Matthias Wenning
+ * @version 1.4
+ * @since 1.4
+ */
 public class CartItem extends Product {
     private int quantity;
 
@@ -8,9 +15,8 @@ public class CartItem extends Product {
         quantity = 1;
     }
 
-    public CartItem(long id, String name, String image, double rating, int numberOfRating, double actualPrice,
-                    double discountPrice) {
-        super(id, name, image, rating, numberOfRating, actualPrice, discountPrice);
+    public CartItem(long id, String name, String image, double rating, int numberOfRatings, double actualPrice, double discountPrice) {
+        super(id, name, image, rating, numberOfRatings, actualPrice, discountPrice);
         quantity = 1;
     }
 
@@ -22,8 +28,13 @@ public class CartItem extends Product {
         this.quantity = quantity;
     }
 
+    public boolean getShowQuantity() {
+        return quantity > 1;
+    }
+
     public void increaseQuantity() {
         quantity++;
+        // TODO: take stock into account
     }
 
     public void decreaseQuantity() {
@@ -31,26 +42,12 @@ public class CartItem extends Product {
         if (quantity > 0) {
             quantity--;
         }
-
-        // TODO : adjust stock number
-
+        // TODO: adjust stock number
     }
 
     public double getTotalPrice() {
-        return Math.floor(quantity * discountPrice * 100) / 100;
+        double total = quantity * actualPrice;
+        return Math.floor(total * 100) / 100;
     }
 
-    // TODO : convert Product into cartItem
-    public CartItem fromProduct(Product product) {
-        CartItem cartItem = (CartItem) product;
-        cartItem.setQuantity(1);
-        return cartItem;
-    }
-    public String toString() {
-        return this.getShortName();
-    }
-
-    public boolean getShowQuantity() {
-        return quantity > 1;
-    }
 }

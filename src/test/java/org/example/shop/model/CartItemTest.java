@@ -1,5 +1,6 @@
 package org.example.shop.model;
 
+
 import org.example.shop.services.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,5 @@
-<div class="d-flex justify-content-between py-1">
-    <div>
-        <span>Showing {{from}}-{{to}} of {{numberOfProducts}} result</span>
-    </div>
-    <div>
-        <select class="form-select border-0"  onchange="triggerSorting(this)">
-            {{#sortings}}
-            <option value="{{name}}" {{selected}}>{{label}}</option>
-            {{/sortings}}
-        </select>
-    </div>
-</div>
+<select class="form-select border-0" onchange="triggerSorting(this)">
+{{#sortings}}
+    <option value="{{name}}" {{selected}}>{{label}}</option>
+{{/sortings}}
+</select>

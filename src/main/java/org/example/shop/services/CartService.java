@@ -1,19 +1,17 @@
 package org.example.shop.services;
 
-import org.example.shop.controllers.CartController;
 import org.example.shop.model.Cart;
 import org.example.shop.model.CartItem;
 import org.example.shop.model.Product;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 /**
- * delivers necassary Services concerning the cart its items
+ * Delivers necessary services concerning the shopping cart and its items
  *
- * @author Daniel Klenn
+ * @author Matthias Wenning
  * @version 1.4
  * @since 1.4
  */
@@ -23,7 +21,6 @@ public class CartService {
 
     private Cart cart;
     private ProductService productService;
-
 
     public CartService() {
         cart = new Cart();
@@ -40,119 +37,120 @@ public class CartService {
      * @param product the Product to convert
      * @return the resulting CartItem with quantity set to 1
      */
-
     public CartItem fromProduct(Product product) {
+        if (product == null) {
+            LOG.warn("fromProduct(): Product is null");
+            return null;
+        }
+
         CartItem cartItem = new CartItem();
         BeanUtils.copyProperties(product, cartItem);
+        LOG.debug("Converted Product '{}' to CartItem", product.getShortName());
         return cartItem;
     }
 
     /**
-     * Finds a product with the {@link ProductService} and adds it to the cart
+     * If an item with this productId already exists, its quantity is increased.
+     * If not, it is added to the cart.
      *
      * @param productId the id to search for
-     * @return <code>true</code>, if successful
+     * @return the short name of the product, or <code>null</code> if none is found
      */
-
     public String addProduct(long productId) {
-        // 1. Search for this Item in the cart
+        // 1. search for this item in the cart
         CartItem cartItem = findById(productId);
-        // 2. If cartItem already exists in the cart
+
+        // 2. if cartItem already exists in the cart
         if (cartItem != null) {
-            // 3. the increase the quantity
+            // 3. then increase its quantity
             cartItem.increaseQuantity();
             LOG.debug("Quantity of '{}' increased", cartItem.getShortName());
         } else {
-            // 2. if prdouctId exists in the product range
+            // 2. if productId exists in the product range
             Product product = productService.getProductById(productId);
             if (product != null) {
-                LOG.info("Product '{}' added to cart", product.getShortName());
-                // 3. then convert it into cartItem
+                // 3. then convert it to CartItem
                 cartItem = fromProduct(product);
                 // 4. and add it to the cart
                 cart.getItems().add(cartItem);
+                LOG.debug("Product {} added to Cart", product.getShortName());
             } else {
-                LOG.debug("Product with ID '{}' not found in product range", productId);
+                LOG.warn("Product with ID '{}' not found in product rage", productId);
                 return null;
             }
         }
-        // TODO :  else output error massage in error Page
-        return cartItem.toString();
+        return cartItem.getShortName();
     }
 
-
     /**
-     * Finds a {@link CartItem} by its productId within the same shopping cart
+     * If an item with this productId exists, it is removed from the cart.
+     * If not, <code>null</code> is returned.
      *
-     * @param productId the id of the {@link Product} to find
-     * @return {@link CartItem}
+     * @param productId the id to search for
+     * @return the short name of the product, or <code>null</code> if none is found
      */
-
-    CartItem findById(long productId) {
-        for (CartItem cartItem : cart.getItems()) {
-            if (cartItem.getId() == productId) {
-                return cartItem;
-            }
+    public String removeProduct(long productId) {
+        CartItem cartItem = findById(productId);
+        if (cartItem != null) {
+            cart.getItems().remove(cartItem);
+            LOG.debug("Item '{}' removed from cart", cartItem.getShortName());
+            return cartItem.getShortName();
         }
+        LOG.warn("Item with ID '{}' not found in cart", productId);
         return null;
     }
 
     /**
-     * Finds a {@link CartItem} by its productId and increased its quantity by 1
+     * Finds a {@link CartItem} by its productId within the shopping cart
      *
-     * @param productId
-     * @return true on success
+     * @param productId the id of the {@link Product} to find
+     * @return {@link CartItem} or null, if none is found
+     */
+    CartItem findById(long productId) {
+        for (CartItem cartItem : cart.getItems()) {
+            if (cartItem.getId() == productId) {
+                LOG.debug("Found product with ID '{}'", productId);
+                return cartItem;
+            }
+        }
+        LOG.error("Could not find product with ID '{}'", productId);
+        return null;
+    }
+
+    /**
+     * Finds an item in the cart and increases its quantity by 1
+     *
+     * @param productId the cartItem's id
+     * @return <code>true</code> if succesful, <code>false</code> otherwise
      */
     public boolean increaseQuantity(long productId) {
         CartItem cartItem = findById(productId);
         if (cartItem != null) {
             cartItem.increaseQuantity();
-            LOG.debug("Quantity of '{}' increased", cartItem.getShortName());
+            LOG.debug("Quantity of '{}' increased to: {}", cartItem.getShortName(), cartItem.getQuantity());
             return true;
-
         } else {
-            LOG.debug("Product with ID '{}' not found in cart", productId);
+            LOG.warn("Product with ID '{}' not found in cart", productId);
             return false;
         }
-
     }
 
     /**
-     * Finds a {@link CartItem} by its productId and decrease its quantity by 1
+     * Finds an item in the cart and decreases its quantity by 1
      *
-     * @param productId
-     * @return false on success
+     * @param productId the cartItem's id
+     * @return <code>true</code> if succesful, <code>false</code> otherwise
      */
     public boolean decreaseQuantity(long productId) {
         CartItem cartItem = findById(productId);
         if (cartItem != null) {
             cartItem.decreaseQuantity();
-            LOG.debug("Quantity of '{}' decreased", cartItem.getShortName());
+            LOG.debug("Quantity of '{}' decreased to: {}", cartItem.getShortName(), cartItem.getQuantity());
             return true;
-
         } else {
-            LOG.debug("Product with ID '{}' not found in cart", productId);
+            LOG.warn("Product with ID '{}' not found in cart", productId);
             return false;
         }
-    }
 
-    /**
-     * Finds a {@link CartItem} by its productId and delete it from the cart
-     *
-     * @param productId
-     * @return true on success
-     */
-    public String deleteItem(long productId) {
-        for (CartItem cartItem : cart.getItems()) {
-            if (cartItem.getId() == productId) {
-                String name = cartItem.getShortName();
-                cart.getItems().remove(cartItem);
-                LOG.debug("Delete of '{}'", cartItem.getShortName());
-                return name;
-            }
-        }
-        LOG.debug("Product with ID '{}' not found in cart", productId);
-        return null;
     }
-
 }

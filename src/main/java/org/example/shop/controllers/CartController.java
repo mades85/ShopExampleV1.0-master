@@ -1,18 +1,17 @@
 package org.example.shop.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Request;
 import org.example.shop.services.CartService;
-import org.example.shop.services.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.awt.print.Book;
 
 @Controller
 @RequestMapping(value = "/cart")
@@ -23,9 +22,8 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @GetMapping(value = "/add/{productId}")
-    public String addToCart(
-            @PathVariable(name = "productId") Integer productId, RedirectAttributes atts, HttpServletRequest request) {
+    @GetMapping(value = {"/add/{productId}"})
+    public String addToCart(@PathVariable(name = "productId") Integer productId, RedirectAttributes atts, HttpServletRequest request) {
         String productName = cartService.addProduct(productId);
         if (productName != null) {
             String message = String.format("'%s' added to the cart", productName);
@@ -36,8 +34,23 @@ public class CartController {
             atts.addFlashAttribute(MESSAGE, message);
             LOG.warn(message);
         }
-        String refferer = request.getHeader("referer");
-        return "redirect:" + refferer;
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
+    }
+
+    @GetMapping(value = {"/remove/{productId}"})
+    public String removeFromCart(@PathVariable(name = "productId") Integer productId, RedirectAttributes atts) {
+        String shortName = cartService.removeProduct(productId);
+        String message = String.format("'%s' removed from the cart", shortName);
+
+        if (shortName != null) {
+            LOG.info(message);
+        } else {
+            message = String.format("Product with ID '%s' could not be found in cart", productId);
+            LOG.warn(message);
+        }
+        atts.addFlashAttribute(MESSAGE, message);
+        return "redirect:/cart.html";
     }
 
     @GetMapping(value = {"/increase/{productId}"})
@@ -48,10 +61,10 @@ public class CartController {
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
         }
-            return "redirect:/cart.html";
+        return "redirect:/cart.html";
     }
 
-    @GetMapping(value = "/decrease/{productId}")
+    @GetMapping(value = {"/decrease/{productId}"})
     public String decreaseQuantity(@PathVariable(name = "productId") Integer productId) {
         boolean isSuccesful = cartService.decreaseQuantity(productId);
         if (isSuccesful) {
@@ -59,21 +72,6 @@ public class CartController {
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
         }
-        return "redirect:/cart.html";
-    }
-
-    @GetMapping(value = "/delete/{productID}")
-    public String deleteFromCart(@PathVariable(name = "productID") Integer productId, RedirectAttributes atts) {
-        String productName = cartService.deleteItem(productId);
-        String message = "";
-        if (productName != null) {
-            message = String.format("'%s' removed from the cart", productName);
-            LOG.info("Cart item with ID '{}' deleted", productId);
-        } else {
-            LOG.warn("Product with ID '{}' could not be found", productId);
-            message = String.format("Product with ID '%s' could not be found", productId);
-        }
-        atts.addFlashAttribute(MESSAGE, message);
         return "redirect:/cart.html";
     }
 }

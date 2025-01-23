@@ -1,17 +1,20 @@
- <nav aria-label="Page navigation" class="d-flex justify-content-center mt-5">
+<nav aria-label="Page navigation" class="d-flex justify-content-center mt-5">
     <ul class="pagination">
         <li class="page-item">
-            <a class="page-link" href="?page={{prevPage}}&sort={{currentSort}}" aria-label="Previous">
-                &laquo;
-            </a>
+            <a class="page-link"
+                href="?category={{category}}&sort={{sort}}&page={{prevPage}}"
+                aria-label="Previous">&laquo;</a>
         </li>
         {{#pages}}
-        <li class="page-item {{value}}" aria-current="page"><a class="page-link" href="?page={{key}}&sort={{currentSort}}">{{key}}</a></li>
+        <li class="page-item {{value}}">
+            <a class="page-link"
+                href="?category={{category}}&sort={{sort}}&page={{key}}">{{key}}</a>
+        </li>
         {{/pages}}
         <li class="page-item">
-            <a class="page-link" href="?page={{nextPage}}&sort={{currentSort}}" aria-label="Next">
-                &raquo;
-            </a>
+            <a class="page-link"
+                href="?category={{category}}&sort={{sort}}&page={{nextPage}}"
+                aria-label="Next">&raquo;</a>
         </li>
     </ul>
 </nav>

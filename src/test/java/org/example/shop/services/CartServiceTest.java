@@ -24,8 +24,8 @@ class CartServiceTest {
         CartItem cartItem = cartService.fromProduct(xiaomi11);
 
         assertEquals(1, cartItem.getQuantity());
-        assertEquals(285.99, cartItem.getDiscountPrice());
-        assertEquals(285.99, cartItem.getTotalPrice());
+        assertEquals(4.39, cartItem.getDiscountPrice());
+        assertEquals(10.99, cartItem.getTotalPrice());
     }
 
     @Test
@@ -33,7 +33,7 @@ class CartServiceTest {
         cartService.addProduct(171);
         CartItem cartItem = cartService.findById(171);
         assertNotNull(cartItem);
-        assertEquals(285.99, cartItem.getDiscountPrice());
+        assertEquals(4.39, cartItem.getDiscountPrice());
 
     }
 
@@ -96,13 +96,13 @@ class CartServiceTest {
     @Test
     void removeProduct_171() {
         cartService.addProduct(171);
-        String shortName = cartService.deleteItem(171);
-        assertTrue(shortName.startsWith("Xiaomi 11 Lite NE 5G"));
+        String shortName = cartService.removeProduct(171);
+        assertTrue(shortName.startsWith("XGMO"));
     }
 
         @Test
         void removeProduct_non_existent () {
-            String shortName = cartService.deleteItem(Integer.MAX_VALUE);
+            String shortName = cartService.removeProduct(Integer.MAX_VALUE);
             assertEquals(null, shortName);
         }
     }
