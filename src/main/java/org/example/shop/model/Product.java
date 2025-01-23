@@ -48,6 +48,7 @@ public class Product {
 
     public String getShortName() {
         int end = name.indexOf(' ', SHORTNAME_LENGTH);
+        end = Math.max(end, SHORTNAME_LENGTH);
         return name.substring(0, end) + "...";
     }
 

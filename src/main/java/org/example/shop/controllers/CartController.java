@@ -34,8 +34,8 @@ public class CartController {
             atts.addFlashAttribute(MESSAGE, message);
             LOG.warn(message);
         }
-        String referrer = request.getHeader("referer");
-        return "redirect:" + referrer;
+        String referer = request.getHeader("referer");
+        return "redirect:" + referer;
     }
 
     @GetMapping(value = {"/remove/{productId}"})
@@ -51,8 +51,8 @@ public class CartController {
             LOG.warn(message);
         }
         atts.addFlashAttribute(MESSAGE, message);
-        String referrer = request.getHeader("referer");
-        return "redirect:" + referrer;
+        String referer = request.getHeader("referer");
+        return "redirect:" + referer;
     }
 
     @GetMapping(value = {"/increase/{productId}"})
@@ -64,8 +64,8 @@ public class CartController {
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
         }
-        String referrer = request.getHeader("referer");
-        return "redirect:" + referrer;
+        String referer = request.getHeader("referer");
+        return "redirect:" + referer;
     }
 
     @GetMapping(value = {"/decrease/{productId}"})
@@ -77,7 +77,7 @@ public class CartController {
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
         }
-        String referrer = request.getHeader("referer");
-        return "redirect:" + referrer;
+        String referer = request.getHeader("referer");
+        return "redirect:" + referer;
     }
 }

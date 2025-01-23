@@ -5,6 +5,7 @@ import org.example.shop.enums.Category;
 import org.example.shop.enums.Sorting;
 import org.example.shop.model.Cart;
 import org.example.shop.model.Product;
+import org.example.shop.model.Order;
 import org.example.shop.services.CartService;
 import org.example.shop.services.Pagination;
 import org.example.shop.services.ProductService;
@@ -75,6 +76,15 @@ public class ShopController implements ErrorController {
         }
         loadCartItems(viewModel);
         return "product";
+    }
+
+    @GetMapping(value = {"/checkout.html"})
+    public String checkout(Model viewModel) {
+        Cart cart = cartService.getCart();
+        Order order = new Order(cart.getItems());
+        viewModel.addAttribute("order", order);
+        loadCartItems(viewModel);
+        return "checkout";
     }
 
     @GetMapping(value = {"/{name}.html"})
