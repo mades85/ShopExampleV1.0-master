@@ -39,7 +39,8 @@ public class CartController {
     }
 
     @GetMapping(value = {"/remove/{productId}"})
-    public String removeFromCart(@PathVariable(name = "productId") Integer productId, RedirectAttributes atts) {
+    public String removeFromCart(@PathVariable(name = "productId") Integer productId, RedirectAttributes atts,
+                                 HttpServletRequest request) {
         String shortName = cartService.removeProduct(productId);
         String message = String.format("'%s' removed from the cart", shortName);
 
@@ -50,28 +51,33 @@ public class CartController {
             LOG.warn(message);
         }
         atts.addFlashAttribute(MESSAGE, message);
-        return "redirect:/cart.html";
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
     }
 
     @GetMapping(value = {"/increase/{productId}"})
-    public String increaseQuantity(@PathVariable(name = "productId") Integer productId) {
+    public String increaseQuantity(@PathVariable(name = "productId") Integer productId,
+                                   HttpServletRequest request) {
         boolean isSuccesful = cartService.increaseQuantity(productId);
         if (isSuccesful) {
             LOG.info("Quantity of cart item with ID '{}' increased", productId);
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
         }
-        return "redirect:/cart.html";
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
     }
 
     @GetMapping(value = {"/decrease/{productId}"})
-    public String decreaseQuantity(@PathVariable(name = "productId") Integer productId) {
+    public String decreaseQuantity(@PathVariable(name = "productId") Integer productId,
+                                   HttpServletRequest request) {
         boolean isSuccesful = cartService.decreaseQuantity(productId);
         if (isSuccesful) {
             LOG.info("Quantity of cart item with ID '{}' decreased", productId);
         } else {
             LOG.warn("Product with ID '{}' could not be found", productId);
         }
-        return "redirect:/cart.html";
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
     }
 }
