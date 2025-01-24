@@ -1,5 +1,6 @@
 package org.example.shop.services;
 
+import org.example.shop.model.CartItem;
 import org.example.shop.model.Order;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,10 @@ public class OrderService {
     }
 
     public int addOrder(Order order) {
+        List<CartItem> existingItems = order.getItems();
+        List<CartItem> copyOfItems = new ArrayList<>(existingItems);
+        order.setItems(copyOfItems);
+
         this.orders.add(order);
         return order.getId();
     }

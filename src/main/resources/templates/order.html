@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Checout Page</title>
+    <meta name="description" content="Bootstrap 5 Electronic Shop HTML CSS Template">
+    {{> partials/htmlHead }}
+
+    <script type="text/javascript">
+    function validateForm(form) {
+        form.classList.add('was-validated')
+        return form.checkValidity()
+    }
+    </script>
+</head>
+
+<body data-bs-theme="dark">
+{{> partials/header }}
+
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="page-title pb-2">Order no.{{order.id}}</h1>
+            <nav class="breadcrumb fs-6">
+                <a class="breadcrumb-item nav-link" href="index.html">Home</a>
+                <span class="breadcrumb-item active" aria-current="page">Checkout</span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="checkout-wrap pb-5">
+    <div class="container">
+
+        <form class="form-group needs-validation" action="order/place" method="post"
+              enctype="application/x-www-form-urlencoded" autocomplete="on"
+              novalidate onsubmit="return validateForm(this)">
+
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4 class="pb-4">Billing Details</h4>
+                    <div class="billing-details">
+                        {{#order.billing}}
+                        <h5>Recipient</h5>
+                        <div class="">
+                            {{firstName}} {{lastName}}<br/>
+                            {{address}}<br/>
+                            {{zipCode}} {{city}}
+                        </div>
+
+                        <h5 class="mt-5">Contact</h5>
+                        <div>
+                            {{#phoneNumber}}
+                            <svg widt="16" height="16">
+                                <use xlink:href="#phone"></use>
+                            </svg>
+                            {{phoneNumber}} <br/>
+                            {{/phoneNumber}}
+                        </div>
+                        {{/order.billing}}
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="your-order mt-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-4">
+                                Image
+                            </div>
+                            <div class="col-lg-6">
+                                Name
+                            </div>
+                            <div class="col-lg-1">
+                                Price
+                            </div>
+                            <div class="col-lg-1">
+                                Quantity
+                            </div>
+                        </div>
+                        {{#order.items}}
+                             <div class="cart-item border-top border-bottom">
+                                <div class="row align-items-center">
+
+                                        <div class="cart-info d-flex flex-wrap align-items-center mb-4">
+                                            <div class="col-lg-4">
+                                                <div class="card-image">
+                                                    <img src="{{image}}" alt="{{{shortName}}}" class="img-fluid">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="card-detail ps-3">
+                                                    <h5 class="card-title">
+                                                        <a href="product.html?id={{id}}" class="text-decoration-none">
+                                                            {{{shortName}}}</a>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="card-price">
+                                                    <span class="money text-muted">{{discountPrice}}&euro;</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                 <div class="product-quantity">
+                                                    {{quantity}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/order.items}}
+                        <h4 class="display-7 pb-4">Cart Totals</h4>
+                        <div class="total-price">
+                            <!-- Summary -->
+                            <table cellspacing="0" class="table">
+                                <tbody>
+                                {{#order}}
+                                <tr class="subtotal border-top border-bottom pt-2 pb-2 text-uppercase">
+                                    <th>Subtotal</th>
+                                    <td data-title="Subtotal">
+                                        <span class="price-amount amount ps-5">
+                                          <bdi>
+                                              {{subTotal}}&euro;
+                                          </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-top border-bottom pt-2 pb-2">
+                                    <th>Shipping</th>
+                                    <td data-title="Total">
+                                        <span class="price-amount amount ps-5">
+                                            <bdi>
+                                                {{shipping}}&euro;
+                                            </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-top border-bottom pt-2 pb-2">
+                                    <th>Taxes</th>
+                                    <td data-title="Total">
+                                        <span class="price-amount amount ps-5">
+                                            <bdi>
+                                                {{includedTax}}&euro;
+                                            </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="border-top border-bottom pt-2 pb-2">
+                                    <th>Discount</th>
+                                    <td data-title="Total">
+                                        <span class="price-amount amount ps-5">
+                                            <bdi>
+                                                -{{discount}}&euro;
+                                            </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="order-total border-bottom pt-2 pb-2 text-uppercase">
+                                    <th>Total</th>
+                                    <td data-title="Total">
+                                        <span class="price-amount amount ps-5">
+                                          <bdi>
+                                              {{grandTotal}}&euro;
+                                          </bdi>
+                                        </span>
+                                    </td>
+                                </tr>
+                                {{/order}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+{{> partials/footer }}
+</body>
+</html>

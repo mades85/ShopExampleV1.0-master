@@ -6,11 +6,13 @@
         <div class="order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-primary">Your cart</span>
+                {{#numOfCartItems}}
                 <span class="badge bg-primary rounded-pill">
-                    {{#numOfCartItems}}
+
                     {{numOfCartItems}}
-                    {{/numOfCartItems}}
+
                 </span>
+                {{/numOfCartItems}}
             </h4>
             <ul class="list-group mb-3">
                 {{#cartItems}}
@@ -29,7 +31,7 @@
                 {{/cartItems}}
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (Euro)</span>
-                    <strong>{{grandTotal}}&euro;</strong>
+                    <strong>{{#grandTotal}}{{grandTotal}}&euro;{{/grandTotal}}</strong>
                 </li>
             </ul>
 

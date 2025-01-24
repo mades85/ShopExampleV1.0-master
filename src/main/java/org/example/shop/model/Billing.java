@@ -10,8 +10,8 @@ import org.example.shop.enums.PaymentMethod;
  */
 public class Billing {
 
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String address;
     private String zipCode;
     private String city;
@@ -19,10 +19,10 @@ public class Billing {
     private String email;
     PaymentMethod paymentMethod;
 
-    public Billing (String firstname, String lastname, String address, String zipCode, String city,
+    public Billing (String firstName, String lastName, String address, String zipCode, String city,
                     String phoneNumber, String email, PaymentMethod paymentMethod) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
         this.zipCode = zipCode;
         this.city = city;
@@ -31,12 +31,12 @@ public class Billing {
         this.paymentMethod = paymentMethod;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getAddress() {

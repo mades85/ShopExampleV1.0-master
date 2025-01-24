@@ -32,6 +32,12 @@ public class Order {
         this.items = items;
         this.orderDate = orderDate;
         this.billing = billing;
+
+        double total = 0;
+        for (CartItem item : items) {
+            total += item.getTotalPrice();
+        }
+        this.subTotal = total;
     }
 
     public Order(List<CartItem> items) {
@@ -58,6 +64,10 @@ public class Order {
         this.grandTotal = grandTotal;
     }
 
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
     public int getId() {
         return id;
     }
@@ -79,11 +89,6 @@ public class Order {
     }
 
     public String getSubTotal() {
-        double total = 0;
-        for (CartItem item : items) {
-            total += item.getTotalPrice();
-        }
-        subTotal = total;
         return trimDecimals(subTotal);
     }
 
